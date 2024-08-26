@@ -358,20 +358,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 259760305}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 99f0d1b9843edf34a9c29ed4a868e36e, type: 3}
+  m_Script: {fileID: 11500000, guid: 81fcec586d6d8c940a1471dc5337ac13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inputHandler: {fileID: 1599172235}
-  animatorHandler: {fileID: 1599172237}
-  hpImage: {fileID: 1093409545}
-  maxHP: 10
-  currHP: 0
-  maxEnergy: 10
-  currEnergy: 0
-  movementSpeed: 10
-  jumpForce: 7
-  maxJumpsAmount: 2
-  dashForce: 5
+  isMovingRight: 0
+  isMovingLeft: 0
+  groundLayer: 3
+  isGrounded: 0
+  isJumping: 0
 --- !u!1 &375939527
 GameObject:
   m_ObjectHideFlags: 0
@@ -892,8 +886,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1599172234}
-  - component: {fileID: 1599172235}
   - component: {fileID: 1599172237}
+  - component: {fileID: 1599172238}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -917,23 +911,6 @@ Transform:
   - {fileID: 17335491}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1599172235
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1599172233}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 81fcec586d6d8c940a1471dc5337ac13, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isMovingRight: 0
-  isMovingLeft: 0
-  isGrounded: 0
-  isJumping: 0
-  groundLayer: 3
 --- !u!114 &1599172237
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -947,6 +924,32 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerAnimator: {fileID: 259760306}
+--- !u!114 &1599172238
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1599172233}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99f0d1b9843edf34a9c29ed4a868e36e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputHandler: {fileID: 259760309}
+  animatorHandler: {fileID: 1599172237}
+  playerObject: {fileID: 259760305}
+  playerRb: {fileID: 259760307}
+  hpImage: {fileID: 81244900}
+  maxHP: 10
+  currHP: 0
+  maxEnergy: 10
+  currEnergy: 0
+  movementSpeed: 10
+  jumpForce: 7
+  maxJumpsAmount: 2
+  dashForce: 90
+  dashTime: 0.25
 --- !u!1 &2063223164
 GameObject:
   m_ObjectHideFlags: 0

@@ -3,21 +3,31 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class InputHandler : MonoBehaviour
-{
-    public bool isMovingRight;
-    public bool isMovingLeft;
-   
+{   
     private InputActions inputActions;
 
-    public bool isGrounded;
-    public bool isJumping;
+    [Header("Movement Stuff")]
+    public bool isMovingRight;
+    public bool isMovingLeft;
 
+    [Header("Jump Stuff")]
     [field: SerializeField]
     public int groundLayer = 3; //layermask ground;
+    public bool isGrounded;
+    public bool isJumping;
 
     private void Awake()
     {
         isGrounded = false;
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.layer == groundLayer)
+        {
+            isGrounded = true;
+            isJumping = false;
+        }
     }
 
     #region INPUTACTION_SETTINGS

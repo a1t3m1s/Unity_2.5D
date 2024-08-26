@@ -6,23 +6,27 @@ using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
+    [Header("Player's Handlers")]
     [field: SerializeField]
     private InputHandler inputHandler;
     [field: SerializeField]
     private AnimatorHandler animatorHandler;
-    [field: SerializeField]
-    private Image hpImage;
 
+    [Header("Player Stuff")]
+    [field: SerializeField]
     private GameObject playerObject;
+    [field: SerializeField]
     private Rigidbody playerRb;
     
-    [Header("Health Settings")]
+    [Header("Health Stuff")]
+    [field: SerializeField]
+    private Image hpImage;
     [field: SerializeField]
     private float maxHP = 10f;
     [field: SerializeField]
     private float currHP;
 
-    [Header("Energy Settings")]
+    [Header("Energy Stuff")]
     [field: SerializeField]
     private float maxEnergy = 10f;
     [field: SerializeField]
@@ -37,19 +41,12 @@ public class PlayerController : MonoBehaviour
     private int maxJumpsAmount = 2;
     private int currJumpsAmount;
     [field: SerializeField]
-    private float dashForce = 20f;
+    private float dashForce = 90f;
     [field: SerializeField]
     private float dashTime = 0.25f;
 
-
     void Awake()
     {
-        //inputHandler = GetComponent<InputHandler>();
-        //animatorHandler = GetComponent<AnimatorHandler>();
-
-        playerObject = gameObject;
-        playerRb = GetComponent<Rigidbody>();
-
         currJumpsAmount = 0;
         currHP = maxHP;
         currEnergy = 0;
@@ -58,13 +55,15 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         inputHandler.SetMoveDirection();
+        
         HandleMove();
-    }
-
-    private void FixedUpdate()
-    {
-        HandleDash();
         HandleJump();
+
+        if(inputHandler.isDashBttnPressed())
+        {
+            StartCoroutine(HandleDash());
+        }
+
     }
 
     #region MOVE_SETTINGS
@@ -103,7 +102,6 @@ public class PlayerController : MonoBehaviour
     {
         if (inputHandler.isGrounded && inputHandler.IsJumpBttnPressed())
         {
-
             inputHandler.isGrounded = false;
             // animatorHandler.UpdateAnimatorValues(true);
             playerRb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
@@ -124,31 +122,24 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.layer == inputHandler.groundLayer)
-        {
-            inputHandler.isGrounded = true;
-            inputHandler.isJumping = false;
-        }
-    }
     #endregion
 
     #region DASH_SETTINGS
-    private void HandleDash()
+    private IEnumerator HandleDash()
     {
-        if (inputHandler.isDashBttnPressed())
+        var forceToApply = new Vector3(0,0,dashForce);
+
+        if(inputHandler.isMovingLeft)
         {
-            Vector3 forceToApply = new Vector3(0, 0, dashForce);
+            forceToApply = -forceToApply;
+        }
 
-            if(inputHandler.isMovingLeft)
-            {
-                forceToApply = -forceToApply;
-            }
+        playerRb.useGravity = false;
+        playerRb.velocity = Vector3.zero;
+        playerRb.AddForce(forceToApply, ForceMode.Acceleration);
+        playerRb.useGravity = true;
 
-            playerObject.transform.position += forceToApply;
-            //playerRb.AddForce(forceToApply, ForceMode.VelocityChange);
-        }        
+        yield return null;
     }
     #endregion
 
